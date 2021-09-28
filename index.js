@@ -98,7 +98,7 @@ const ask = [
         {
             type: 'input',
             name: 'alt',
-            message: '[Required] ]provide an alt text for your screenshot/gif for accessibility:',
+            message: '[Required] ] Provide an alt text for your screenshot/gif for accessibility:',
             validate: function (answer) {
                 if (answer.length < 1) {
                     return console.log("Alt text is required to continue.")
