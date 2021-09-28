@@ -1,85 +1,152 @@
-// packages needed for this application
-const fs = require('fs');
+// Packages required
 const inquirer = require('inquirer');
+const fs = require('fs');
 
-// Prompt user
-inquirer 
-    .prompt([
+// internal
+const generateMarkdown = require('./util/generateMarkdown.js');
+
+// Inquirer prompts
+const ask = [
         {
             type: 'input',
             name: 'name',
-            message: 'What is your name?',
+            message: '[Required] What is the name of your project?',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("A project name is required to continue.")
+                }
+                return true;
+            }
         },
         {
-            type: 'checkbox',
-            choices: ['HTML', 'CSS', 'JavaSCript', 'C#', 'C++', 'Python 1', 'Scratch'],
-            name: 'stack',
-            message: 'What languages do you know?',
+            type: 'input',
+            name: 'tagline',
+            message: 'Input a tagline or hook (1-2 sentences ideal):',
         },
         {
-            type: 'list',
-            choices: ['Email', 'Phone', "Don't talk to me"],
-            name: 'communication',
-            message: 'What is your preferred method of communication?',
+            type: 'input',
+            name: 'username',
+            message: '[Required] What is your github username?',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Username is required to continue.")
+                }
+                return true;
+            }
         },
-    ])
-    .then((data) => {
-        const filename = `${data.name.toLowerCase().split(' ').join('')}.json`;
-        
-        fs.writeFile(filename, JSON.stringify(data, null, '/t'), (err) => 
-            err ? console.log(err) : console.log('Success!')
-        );
+        {
+            type: 'input',
+            name: 'profile',
+            message: '[Required] What is your github profile link?',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("A profile link is required to continue.")
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: '[Required] What is your email?',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Email is required to continue.")
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'description',
+            message: "[Required] Description: What is your project about? Why? How was it made?",
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Description is required to continue.")
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'install',
+            message: 'If applicable, what is the installation process?',
+        },
+        {
+            type: 'input',
+            name: 'usage',
+            message: 'If applicable, provide instructions for using the project:',
+        },
+        {
+            type: 'input',
+            name: 'page',
+            message: 'If applicable, provide a link to a live page demo:',
+        },
+        {
+            type: 'input',
+            name: 'image',
+            message: '[Required] What is the file path to reach your demo screenshot/gif? (example: assets/images/demo.png)',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Demo is required to continue.")
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'alt',
+            message: '[Required] ]provide an alt text for your screenshot/gif for accessibility:',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Alt text is required to continue.")
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'contributions',
+            message: 'If applicable, how can one contribute to the project?',
+        },
+        {
+            type: 'input',
+            name: 'credits',
+            message: 'If applicable who else should recieve credit for work on this project? (ex: x, y, and z)',
+        },
+    ]
+
+// write file
+function writeToFile(filename, data) {
+    fs.writeFile(filename, data, err => {
+        err ? console.log(err) : console.log('README generation successful!');
     });
+}
 
-// Create the HTML and incorporate user responses (from response object)
-// probably using Template Literal syntax to build the HTML
-// Write/output HTML file to the application root director (same folder that contains the .js)
-// use the fs.writeFile(fileName, htmlString, (err) => {...}) method
-// Need to write out Success message after successfully outputing HTML
-// inside writeFile callback, verify that there was no error.
-// Just use console.log() for this
+// initialize
+async function init() {
+    try {
+        //ask questions
+        const response = await inquirer.prompt(ask);
+        console.log("Saving Responses...");
 
-// HOMEWORK PSUEDO
-// What the app is for
-// How to use the app
-// How to install it
-// How to report issues
-// How to make contributions 
-//Dynamically generates a README.md file
+        //generate markdown
+        const draft = generateMarkdown(response);
+        console.log("Generating README...");
+
+        //write file
+        await writeToFile(`${response.name.toLowerCase().split(' ').join('')}-README.md`, draft);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+init();
 
 // Include a walkthrough video that demonstrates functionality
 
-// Project title
-    // displayed as title of README
-// Description
-// Table of Contents
-// Installation
-// Usage
 //License
     // List of options
     // Badge for that license is added near top of readme 
     // Notice added to license section explaining which license the app is under
-// Contributing
-// Tests 
-// Questions
-
-// When I enter my Github username
-    // added to Questions w link to github profile
-// email address
-    // added to README entitled questions w instructions for how to reach
-// Table of contents
-    //take you to that readme section
-
-
-
-// TODO: Create an array of questions for user input
-const questions = [];
-
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
-
-// TODO: Create a function to initialize app
-function init() {}
-
-// Function call to initialize app
-init();
