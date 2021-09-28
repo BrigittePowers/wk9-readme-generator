@@ -3,7 +3,7 @@
   ## Description
   *What is it and why was it made?*
 
-  The project was made using node.js in an effort to simplify README creation for GitHUb projects going forward. The generator provides a foundation for README creation that is flexible enough to fit differing project goals. The generator creates a firm foundation from which to build a variety of project README files with a dynamic table of contents depending on developer's focus. 
+  The project was made using node.js in an effort to simplify README creation for GitHub projects going forward. The generator provides a foundation for README creation that is flexible enough to fit differing project goals. The generator creates a firm foundation from which to build a variety of project README files with a dynamic table of contents depending on developer's focus. 
 
   ![License for GitHub repo](https://img.shields.io/github/license/BrigittePowers/wk9-readme-generator)
   ## Table of Contents
