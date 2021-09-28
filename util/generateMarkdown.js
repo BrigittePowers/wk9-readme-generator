@@ -11,7 +11,7 @@ function renderLicenseLink(license) {}
 function renderLicenseSection(license) {}
 
 // TODO: Create a function to generate markdown for README
-function generateMarkdown(response) {
+function generateMarkdown(response, git) {
   
   // dynamic table of contents
   let toc = `## Table of Contents`;
@@ -19,8 +19,8 @@ function generateMarkdown(response) {
   if (response.install !== ``) {toc += `
   * [Installation](#installation)`};
 
-  if (response.usage !== ``) {toc += `
-  * [Usage](#usage)`};
+  toc += `
+  * [Usage](#usage)`
   
   if (response.questions !== ``) {toc += `
   * [Questions](#questions)`};
@@ -31,18 +31,16 @@ function generateMarkdown(response) {
   if (response.credits !== '') { toc += `
   * [Credits](#credits)`};
 
-  if (response.license !==``) {toc += `
-  * [License](#license)`};
-
   // markdown
   // REQUIRED project name
   let markdown =
-  `# ${response.name}`
+  `# ${response.name}
+  `
   
   // OPTIONAL tagline
   if (response.tagline !==``) {
   markdown +=
-  `*${response.tagline}*`
+  `## *${response.tagline}*`
   };
 
   //REQUIRED description
@@ -51,6 +49,8 @@ function generateMarkdown(response) {
   *What is it and why was it made?*
 
   ${response.description}
+
+  ![License for GitHub repo](https://img.shields.io/github/license/${response.username}/${response.repo})
   `
 
   //generated toc
@@ -71,7 +71,7 @@ function generateMarkdown(response) {
   // REQUIRED image/alt
   markdown +=`
   ## Usage
-  _Instructions and/or Examples for utilizing the project:_
+  *Instructions and/or Examples for utilizing the project:*
 
   `
 
@@ -82,29 +82,38 @@ function generateMarkdown(response) {
 
   if (response.page !==``) {
   markdown +=`
-  Live demo can be viewed at: ${response.page}`
+
+  Live demo can be viewed at: ${response.page}
+  
+  `
   };
 
   markdown += `
+
   ![${response.alt}](${response.image})
   
   ## Questions
 
-  ${response.name} is originally made at ${response.profile} by ${response.username}. If you have any questions or need specialized help, the project manager can be reached at ${response.email}. Include the subject line "${response.name} SUPPORT".
+  GitHub: [@${git.login}](${git.url})
+
+  ${response.name} is originally made by ${response.username}. 
+  If you have any questions or need specialized help, the project manager 
+  can be reached at ${response.email}. 
+  Include the subject line "${response.name} SUPPORT".
   `
 
   // OPTIONAL contributions
   if (response.contributions !==``) {
   markdown +=`
   ## Contributions
-  _Want to help? Here's how_
+  *Want to help? Here's how*
 
   ${response.contributions}
   `
   };
 
   //OPTIONAL Credits
-  if (response.contributions !==``) {
+  if (response.credits !==``) {
   markdown +=`
   ## Credits
   *Special thanks to...*

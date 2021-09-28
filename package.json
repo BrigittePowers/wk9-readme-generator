@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/BrigittePowers/wk9-readme-generator#readme",
   "dependencies": {
+    "axios": "^0.21.4",
     "inquirer": "^8.1.5"
   }
 }

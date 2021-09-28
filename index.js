@@ -4,16 +4,18 @@ const fs = require('fs');
 
 // internal
 const generateMarkdown = require('./util/generateMarkdown.js');
+const gitInfo = require('./util/gitInfo.js');
+const api = require('./util/gitInfo.js');
 
 // Inquirer prompts
 const ask = [
         {
             type: 'input',
             name: 'name',
-            message: '[Required] What is the name of your project?',
+            message: '[Required] What is the title of your project?',
             validate: function (answer) {
                 if (answer.length < 1) {
-                    return console.log("A project name is required to continue.")
+                    return console.log("A project title is required to continue.")
                 }
                 return true;
             }
@@ -36,11 +38,11 @@ const ask = [
         },
         {
             type: 'input',
-            name: 'profile',
-            message: '[Required] What is your github profile link?',
+            name: 'repo',
+            message: '[Required] What is the name of the GitHUb repo?',
             validate: function (answer) {
                 if (answer.length < 1) {
-                    return console.log("A profile link is required to continue.")
+                    return console.log("Repository name is required to continue.")
                 }
                 return true;
             }
@@ -48,7 +50,7 @@ const ask = [
         {
             type: 'input',
             name: 'email',
-            message: '[Required] What is your email?',
+            message: '[Required] What email address are you reachable by for project support?',
             validate: function (answer) {
                 if (answer.length < 1) {
                     return console.log("Email is required to continue.")
@@ -130,8 +132,12 @@ async function init() {
         const response = await inquirer.prompt(ask);
         console.log("Saving Responses...");
 
+        // github api
+        const git = await api.getUser(response);
+        console.log("Retriving GitHub profile...");
+
         //generate markdown
-        const draft = generateMarkdown(response);
+        const draft = generateMarkdown(response, git);
         console.log("Generating README...");
 
         //write file
